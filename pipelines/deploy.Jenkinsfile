@@ -17,7 +17,6 @@ pipeline {
                 {
                     // Update the YAML manifests with the new image name
                     sh '''
-                      pwd .
                       cd k8s
                       cd $SERVICE_NAME
                       git checkout main
