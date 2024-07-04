@@ -15,7 +15,7 @@ pipeline {
                     dir("k8s/NetflixFrontend") {
                         // Update the image in the deployment YAML using sed
                         sh """
-                            sed -i 's|image: .*|image: ${IMAGE_FULL_NAME_PARAM}|' deployment-netflix-frontend.yaml
+                            sed -i 's|image: .*|image: ${IMAGE_FULL_NAME_PARAM}|' deployment.yaml
 
                             # Verify the changes
                             cat deployment-netflix-frontend.yaml
