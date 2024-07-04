@@ -18,7 +18,7 @@ pipeline {
                             sed -i 's|image: .*|image: ${IMAGE_FULL_NAME_PARAM}|' deployment.yaml
 
                             # Verify the changes
-                            cat deployment-netflix-frontend.yaml
+                            cat deployment.yaml
                         """
 
                         // Commit and push the changes
