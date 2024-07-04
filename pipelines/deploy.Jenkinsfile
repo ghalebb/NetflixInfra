@@ -28,7 +28,7 @@ pipeline {
                                 git config --global user.email "ghaleb.butto99@gmail.com"
                                 git add deployment.yaml
                                 git commit -m 'Update image to ${IMAGE_FULL_NAME_PARAM}'
-                                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/AbedAwaisy/NetflixInfra.git HEAD:main
+                                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ghalebb/NetflixInfra.git HEAD:main
                             """
                         }
                     }
