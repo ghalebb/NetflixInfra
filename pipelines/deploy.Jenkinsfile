@@ -2,43 +2,36 @@ pipeline {
     agent {
         label 'general'
     }
-
     parameters {
-        string(name: 'SERVICE_NAME', defaultValue: '', description: '')
-        string(name: 'IMAGE_FULL_NAME_PARAM', defaultValue: '', description: '')
+        string(name: 'SERVICE_NAME', defaultValue: '', description: 'The name of the service to deploy')
+        string(name: 'IMAGE_FULL_NAME_PARAM', defaultValue: '', description: 'The full Docker image name to deploy')
     }
 
     stages {
-        stage('Deploy')
-        {
-            steps
-            {
-                script
-                {
-                    // Update the YAML manifests with the new image name
-                    sh '''
-                      cd k8s
-                      cd $SERVICE_NAME
-                      git checkout main
-                      # Replace the image name in the deployment YAML file
-                      sed -i "s|image:.*|image: ${IMAGE_FULL_NAME_PARAM}|g" deployment.yaml
+        stage('Deploy') {
+            steps {
+                script {
+                    // Change to the directory containing the deployment YAML
+                    dir("k8s/NetflixFrontend") {
+                        // Update the image in the deployment YAML using sed
+                        sh """
+                            sed -i 's|image: .*|image: ${IMAGE_FULL_NAME_PARAM}|' deployment-netflix-frontend.yaml
 
+                            # Verify the changes
+                            cat deployment-netflix-frontend.yaml
+                        """
 
-                      # Print the updated deployment YAML to verify the change
-                      echo "Updated deployment.yaml:"
-                      cat deployment.yaml
-
-                      git config --global user.email "jenkins@example.com"
-                      git config --global user.name "Jenkins"
-
-                      git remote set-url origin https://${GITHUB_TOKEN_PSW}@github.com/ghalebb/NetflixInfra.git
-
-
-                      git add deployment.yaml
-                      git commit -m "Update deployment image to ${IMAGE_FULL_NAME_PARAM}"
-                      git push origin main
-
-                    '''
+                        // Commit and push the changes
+                        withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                            sh """
+                                git config --global user.name "Ghaleb Butto"
+                                git config --global user.email "ghaleb.butto99@gmail.com"
+                                git add deployment.yaml
+                                git commit -m 'Update image to ${IMAGE_FULL_NAME_PARAM}'
+                                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/AbedAwaisy/NetflixInfra.git HEAD:main
+                            """
+                        }
+                    }
                 }
             }
         }
