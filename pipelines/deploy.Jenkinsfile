@@ -31,7 +31,7 @@ pipeline {
                       git config --global user.email "jenkins@example.com"
                       git config --global user.name "Jenkins"
 
-                      git remote set-url origin https://${GITHUB_TOKEN_PSW}@github.com:ghalebb/NetflixInfra.git
+                      git remote set-url origin https://${GITHUB_TOKEN_PSW}@github.com/ghalebb/NetflixInfra.git
 
 
                       git add deployment.yaml
