@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: netflix-frontend
-        image: docker pull ghalebb/netflix-app:v1.0.31
+        image: ghalebb/netflix-app:v1.0.32
         ports:
         - containerPort: 3000
         env:
